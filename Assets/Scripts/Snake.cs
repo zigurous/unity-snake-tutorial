@@ -37,42 +37,37 @@ public class Snake : MonoBehaviour
 
     private void Update()
     {
-        // If moving horizontal, then only allow turning up or down
-        if (this.direction.x != 0.0f)
-        {
-            // Set the direction based on the input key being pressed
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                this.direction = Vector2.up;
-            } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                this.direction = Vector2.down;
-            }
-        }
-        // If moving vertical, then only allow turning left or right
-        else if (this.direction.y != 0.0f)
-        {
-            // Set the direction based on the input key being pressed
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-                this.direction = Vector2.right;
-            } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-                this.direction = Vector2.left;
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        // Set each segment's position to be the same as the one it follows. We
-        // must do this in reverse order so the position is set to the previous
-        // position, otherwise they will all be stacked on top of each other.
-        for (int i = _segments.Count - 1; i > 0; i--) {
-            _segments[i].position = _segments[i - 1].position;
+        // Set the direction based on the input key being pressed
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            this.direction = Vector2.up;
+        } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+            this.direction = Vector2.down;
+        } else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+            this.direction = Vector2.right;
+        } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+            this.direction = Vector2.left;
+        } else {
+            this.direction = Vector2.zero;
         }
 
-        // Increase the snake's position by one in the direction they are
-        // moving. Round the position to ensure it stays aligned to the grid.
-        this.transform.position = new Vector3(
-            Mathf.Round(this.transform.position.x) + this.direction.x,
-            Mathf.Round(this.transform.position.y) + this.direction.y);
+        // Only move the snake for the frame when the input was pressed
+        if (this.direction != Vector2.zero)
+        {
+            // Set each segment's position to be the same as the one it follows.
+            // We must do this in reverse order so the position is set to the
+            // previous position, otherwise they will all be stacked on top of
+            // each other.
+            for (int i = _segments.Count - 1; i > 0; i--) {
+                _segments[i].position = _segments[i - 1].position;
+            }
+
+            // Increase the snake's position by one in the direction they are
+            // moving. Round the position to ensure it stays aligned to the
+            // grid.
+            this.transform.position = new Vector3(
+                Mathf.Round(this.transform.position.x) + this.direction.x,
+                Mathf.Round(this.transform.position.y) + this.direction.y);
+        }
     }
 
     public void Grow()

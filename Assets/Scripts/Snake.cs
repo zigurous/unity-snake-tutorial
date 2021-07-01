@@ -114,13 +114,23 @@ public class Snake : MonoBehaviour
     {
         if (other.tag == "Food")
         {
-            // Food eaten, increase the size of the snake
             Grow();
         }
         else if (other.tag == "Obstacle")
         {
-            // Game over, reset the state of the snake
-            ResetState();
+            // Teleport to the opposite side
+            if (this.direction.x != 0.0f)
+            {
+                Vector3 position = this.transform.position;
+                position.x = -other.transform.position.x + this.direction.x;
+                this.transform.position = position;
+            }
+            else if (this.direction.y != 0.0f)
+            {
+                Vector3 position = this.transform.position;
+                position.y = -other.transform.position.y + this.direction.y;
+                this.transform.position = position;
+            }
         }
     }
 

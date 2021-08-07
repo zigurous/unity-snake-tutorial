@@ -1,34 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Handles the movement of the snake and growing in size.
-/// </summary>
 [RequireComponent(typeof(BoxCollider2D))]
 public class Snake : MonoBehaviour
 {
-    /// <summary>
-    /// The list of segments of the snake.
-    /// </summary>
     private List<Transform> _segments = new List<Transform>();
-
-    /// <summary>
-    /// The object that is cloned when creating a new segment to grow the snake.
-    /// </summary>
-    [Tooltip("The object that is cloned when creating a new segment to grow the snake.")]
     public Transform segmentPrefab;
-
-    /// <summary>
-    /// The number of segments the snake has initially.
-    /// </summary>
-    [Tooltip("The number of segments the snake has initially.")]
-    public int initialSize = 4;
-
-    /// <summary>
-    /// The direction the snake is moving.
-    /// </summary>
-    [HideInInspector]
     public Vector2 direction = Vector2.right;
+    public int initialSize = 4;
 
     private void Start()
     {
@@ -37,7 +16,6 @@ public class Snake : MonoBehaviour
 
     private void Update()
     {
-        // Set the direction based on the input key being pressed
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
             this.direction = Vector2.up;
         } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
@@ -50,7 +28,7 @@ public class Snake : MonoBehaviour
             this.direction = Vector2.zero;
         }
 
-        // Only move the snake for the frame when the input was pressed
+        // Only move the snake during the frame an input was pressed
         if (this.direction != Vector2.zero)
         {
             // Set each segment's position to be the same as the one it follows.
@@ -61,9 +39,8 @@ public class Snake : MonoBehaviour
                 _segments[i].position = _segments[i - 1].position;
             }
 
-            // Increase the snake's position by one in the direction they are
-            // moving. Round the position to ensure it stays aligned to the
-            // grid.
+            // Move the snake in the direction it is facing
+            // Round the values to ensure it aligns to the grid
             this.transform.position = new Vector3(
                 Mathf.Round(this.transform.position.x) + this.direction.x,
                 Mathf.Round(this.transform.position.y) + this.direction.y);
@@ -72,20 +49,14 @@ public class Snake : MonoBehaviour
 
     public void Grow()
     {
-        // Create a new segment
         Transform segment = Instantiate(this.segmentPrefab);
-
-        // Position the segment at the same spot as the last segment
         segment.position = _segments[_segments.Count - 1].position;
 
-        // Add the segment to the end of the list
         _segments.Add(segment);
     }
 
     public void ResetState()
     {
-        // Set the initial direction of the snake, starting at the origin
-        // (center of the grid)
         this.direction = Vector2.right;
         this.transform.position = Vector3.zero;
 
@@ -94,12 +65,11 @@ public class Snake : MonoBehaviour
             Destroy(_segments[i].gameObject);
         }
 
-        // Clear the list then add the head (this) as the first segment
+        // Clear the list but add back this as the head
         _segments.Clear();
         _segments.Add(this.transform);
 
-        // Grow the snake to the initial size -1 since the head was already
-        // added
+        // -1 since the head is already in the list
         for (int i = 0; i < this.initialSize - 1; i++) {
             Grow();
         }
@@ -107,14 +77,9 @@ public class Snake : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Food")
-        {
-            // Food eaten, increase the size of the snake
+        if (other.tag == "Food") {
             Grow();
-        }
-        else if (other.tag == "Obstacle")
-        {
-            // Game over, reset the state of the snake
+        } else if (other.tag == "Obstacle") {
             ResetState();
         }
     }

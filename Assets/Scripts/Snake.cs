@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -8,10 +9,22 @@ public class Snake : MonoBehaviour
     public Transform segmentPrefab;
     public Vector2 direction = Vector2.right;
     public int initialSize = 4;
+    public float speed = 30.0f;
+    public float speedMultiplier = 1.0f;
 
     private void Start()
     {
         ResetState();
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(MoveSnake());
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 
     private void Update()
@@ -36,21 +49,26 @@ public class Snake : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private IEnumerator MoveSnake()
     {
-        // Set each segment's position to be the same as the one it follows. We
-        // must do this in reverse order so the position is set to the previous
-        // position, otherwise they will all be stacked on top of each other.
-        for (int i = _segments.Count - 1; i > 0; i--) {
-            _segments[i].position = _segments[i - 1].position;
+        while (this.enabled)
+        {
+            // Set each segment's position to be the same as the one it follows. We
+            // must do this in reverse order so the position is set to the previous
+            // position, otherwise they will all be stacked on top of each other.
+            for (int i = _segments.Count - 1; i > 0; i--) {
+                _segments[i].position = _segments[i - 1].position;
+            }
+
+            // Move the snake in the direction it is facing
+            // Round the values to ensure it aligns to the grid
+            float x = Mathf.Round(this.transform.position.x) + this.direction.x;
+            float y = Mathf.Round(this.transform.position.y) + this.direction.y;
+
+            this.transform.position = new Vector2(x, y);
+
+            yield return new WaitForSeconds(1.0f / (this.speed * this.speedMultiplier));
         }
-
-        // Move the snake in the direction it is facing
-        // Round the values to ensure it aligns to the grid
-        float x = Mathf.Round(this.transform.position.x) + this.direction.x;
-        float y = Mathf.Round(this.transform.position.y) + this.direction.y;
-
-        this.transform.position = new Vector2(x, y);
     }
 
     public void Grow()

@@ -1,52 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Handles storing the direction of a snake segment and rotating the object to
-/// the correct orientation based on the direction.
-/// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class SnakeSegment : MonoBehaviour
 {
-    /// <summary>
-    /// The sprite of the head snake segment.
-    /// </summary>
-    [Tooltip("The sprite of the head snake segment.")]
     public Sprite head;
-
-    /// <summary>
-    /// The sprite of the tail snake segment.
-    /// </summary>
-    [Tooltip("The sprite of the tail snake segment.")]
     public Sprite tail;
-
-    /// <summary>
-    /// The sprite of a body snake segment.
-    /// </summary>
-    [Tooltip("The sprite of a body snake segment.")]
     public Sprite body;
-
-    /// <summary>
-    /// The sprite of a corner snake segment.
-    /// </summary>
-    [Tooltip("The sprite of a corner snake segment.")]
     public Sprite corner;
 
-    /// <summary>
-    /// The direction the snake segment is moving.
-    /// </summary>
     public Vector2 direction { get; private set; }
-
-    /// <summary>
-    /// The sprite renderer component on the snake segment.
-    /// </summary>
     private SpriteRenderer _spriteRenderer;
-
-    /// <summary>
-    /// The angle of rotation of every combination of directions. The first
-    /// layer of dictionaries is the new direction, and the second layer is the
-    /// previous direction.
-    /// </summary>
     private static Dictionary<Vector2, Dictionary<Vector2, float>> orientations;
 
     private void Awake()
@@ -64,8 +28,6 @@ public class SnakeSegment : MonoBehaviour
         // Calculate the correct rotation based on the direction (new and old)
         float angle = orientations[direction][previous];
         this.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-        // Set the new direction
         this.direction = direction;
     }
 

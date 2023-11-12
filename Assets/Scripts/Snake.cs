@@ -12,8 +12,6 @@ public class Snake : MonoBehaviour
     public bool moveThroughWalls = false;
 
     private readonly List<Transform> segments = new List<Transform>();
-    private Vector2Int input;
-    private float nextUpdate;
 
     private void Start()
     {
@@ -22,36 +20,16 @@ public class Snake : MonoBehaviour
 
     private void Update()
     {
-        // Only allow turning up or down while moving in the x-axis
-        if (direction.x != 0f)
-        {
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                input = Vector2Int.up;
-            } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                input = Vector2Int.down;
-            }
-        }
-        // Only allow turning left or right while moving in the y-axis
-        else if (direction.y != 0f)
-        {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-                input = Vector2Int.right;
-            } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-                input = Vector2Int.left;
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        // Wait until the next update before proceeding
-        if (Time.time < nextUpdate) {
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            direction = Vector2Int.up;
+        } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+            direction = Vector2Int.down;
+        } else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+            direction = Vector2Int.right;
+        } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+            direction = Vector2Int.left;
+        } else {
             return;
-        }
-
-        // Set the new direction based on the input
-        if (input != Vector2Int.zero) {
-            direction = input;
         }
 
         // Set each segment's position to be the same as the one it follows. We
@@ -66,9 +44,6 @@ public class Snake : MonoBehaviour
         int x = Mathf.RoundToInt(transform.position.x) + direction.x;
         int y = Mathf.RoundToInt(transform.position.y) + direction.y;
         transform.position = new Vector2(x, y);
-
-        // Set the next update time based on the speed
-        nextUpdate = Time.time + (1f / (speed * speedMultiplier));
     }
 
     public void Grow()

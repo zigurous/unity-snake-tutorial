@@ -7,6 +7,7 @@ public class Snake : MonoBehaviour
     private List<Transform> segments = new List<Transform>();
     public Transform segmentPrefab;
     public Vector2 direction = Vector2.right;
+    private Vector2 input;
     public int initialSize = 4;
 
     private void Start()
@@ -20,24 +21,29 @@ public class Snake : MonoBehaviour
         if (direction.x != 0f)
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                direction = Vector2.up;
+                input = Vector2.up;
             } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                direction = Vector2.down;
+                input = Vector2.down;
             }
         }
         // Only allow turning left or right while moving in the y-axis
         else if (direction.y != 0f)
         {
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-                direction = Vector2.right;
+                input = Vector2.right;
             } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-                direction = Vector2.left;
+                input = Vector2.left;
             }
         }
     }
 
     private void FixedUpdate()
     {
+        // Set the new direction based on the input
+        if (input != Vector2.zero) {
+            direction = input;
+        }
+
         // Set each segment's position to be the same as the one it follows. We
         // must do this in reverse order so the position is set to the previous
         // position, otherwise they will all be stacked on top of each other.

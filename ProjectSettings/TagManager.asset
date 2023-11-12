@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Snake
   - Food
-  - Boundary
+  - Obstacle
   layers:
   - Default
   - TransparentFX

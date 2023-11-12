@@ -11,7 +11,7 @@ public class Snake : MonoBehaviour
     /// <summary>
     /// The list of segments of the snake.
     /// </summary>
-    private List<Transform> _segments;
+    private List<Transform> _segments = new List<Transform>();
 
     /// <summary>
     /// The object that is cloned when creating a new
@@ -30,7 +30,12 @@ public class Snake : MonoBehaviour
     /// The direction the snake is moving.
     /// </summary>
     [HideInInspector]
-    public Vector2 direction;
+    public Vector2 direction = Vector2.right;
+
+    private void Start()
+    {
+        ResetState();
+    }
 
     private void Update()
     {
@@ -87,21 +92,22 @@ public class Snake : MonoBehaviour
         _segments.Add(segment);
     }
 
-    public void ResetSize()
+    public void ResetState()
     {
-        // Clear out the previous segments if they exist
-        if (_segments != null)
-        {
-            // Start at 1 to skip the head
-            for (int i = 1; i < _segments.Count; i++) {
-                Destroy(_segments[i].gameObject);
-            }
+        // Set the initial direction of the snake,
+        // starting at the origin (center of the grid)
+        this.direction = Vector2.right;
+        this.transform.position = Vector3.zero;
+
+        // Start at 1 to skip destroying the head
+        for (int i = 1; i < _segments.Count; i++) {
+            Destroy(_segments[i].gameObject);
         }
 
-        // Create a new list to store the snake segments
-        // and add the head (this) as the first segment
-        _segments = new List<Transform>(this.initialSize);
-        _segments.Add(this.transform); // head
+        // Clear the list then add the head (this)
+        // as the first segment
+        _segments.Clear();
+        _segments.Add(this.transform);
 
         // Grow the snake to the initial size
         // -1 since the head was already added
@@ -114,16 +120,13 @@ public class Snake : MonoBehaviour
     {
         if (other.tag == "Food")
         {
-            // Inform the game manager that food was eaten
-            // so score can be updated and other state changes
-            // can be made
-            FindObjectOfType<GameManager>().FoodEaten();
+            // Food eaten, increase the size of the snake
+            Grow();
         }
-        else if (other.tag == "Snake" || other.tag == "Boundary")
+        else if (other.tag == "Obstacle")
         {
-            // Game over if the snake runs into itself
-            // or if the snake runs into a boundary
-            FindObjectOfType<GameManager>().GameOver();
+            // Game over, reset the state of the snake
+            ResetState();
         }
     }
 

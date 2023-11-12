@@ -44,9 +44,9 @@ public class Snake : MonoBehaviour
         {
             // Set the direction based on the input key being pressed
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                this.direction = new Vector2Int(0, 1);
+                this.direction = Vector2.up;
             } else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                this.direction = new Vector2Int(0, -1);
+                this.direction = Vector2.down;
             }
         }
         // If moving vertical, then only allow turning left or right
@@ -54,9 +54,9 @@ public class Snake : MonoBehaviour
         {
             // Set the direction based on the input key being pressed
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-                this.direction = new Vector2Int(1, 0);
+                this.direction = Vector2.right;
             } else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-                this.direction = new Vector2Int(-1, 0);
+                this.direction = Vector2.left;
             }
         }
     }

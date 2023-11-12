@@ -11,7 +11,7 @@ public class Food : MonoBehaviour
 
     public void RandomizePosition()
     {
-        Bounds bounds = this.gridArea.bounds;
+        Bounds bounds = gridArea.bounds;
 
         // Pick a random position inside the bounds
         float x = Random.Range(bounds.min.x, bounds.max.x);
@@ -21,7 +21,7 @@ public class Food : MonoBehaviour
         x = Mathf.Round(x);
         y = Mathf.Round(y);
 
-        this.transform.position = new Vector2(x, y);
+        transform.position = new Vector2(x, y);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

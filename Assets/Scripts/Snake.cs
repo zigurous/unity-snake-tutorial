@@ -2,8 +2,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Handles the movement of the snake and
-/// growing in size.
+/// Handles the movement of the snake and growing in size.
 /// </summary>
 [RequireComponent(typeof(BoxCollider2D))]
 public class Snake : MonoBehaviour
@@ -14,8 +13,7 @@ public class Snake : MonoBehaviour
     private List<Transform> _segments = new List<Transform>();
 
     /// <summary>
-    /// The object that is cloned when creating a new
-    /// segment to grow the snake.
+    /// The object that is cloned when creating a new segment to grow the snake.
     /// </summary>
     [Tooltip("The object that is cloned when creating a new segment to grow the snake.")]
     public Transform segmentPrefab;
@@ -63,18 +61,15 @@ public class Snake : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Set each segment's position to be the same
-        // as the one it follows. We must do this in
-        // reverse order so the position is set to the
-        // previous position, otherwise they will all
-        // be stacked on top of each other.
+        // Set each segment's position to be the same as the one it follows. We
+        // must do this in reverse order so the position is set to the previous
+        // position, otherwise they will all be stacked on top of each other.
         for (int i = _segments.Count - 1; i > 0; i--) {
             _segments[i].position = _segments[i - 1].position;
         }
 
-        // Increase the snake's position by one in the
-        // direction they are moving. Round the position
-        // to ensure it stays aligned to the grid.
+        // Increase the snake's position by one in the direction they are
+        // moving. Round the position to ensure it stays aligned to the grid.
         this.transform.position = new Vector3(
             Mathf.Round(this.transform.position.x) + this.direction.x,
             Mathf.Round(this.transform.position.y) + this.direction.y);
@@ -94,8 +89,8 @@ public class Snake : MonoBehaviour
 
     public void ResetState()
     {
-        // Set the initial direction of the snake,
-        // starting at the origin (center of the grid)
+        // Set the initial direction of the snake, starting at the origin
+        // (center of the grid)
         this.direction = Vector2.right;
         this.transform.position = Vector3.zero;
 
@@ -104,13 +99,12 @@ public class Snake : MonoBehaviour
             Destroy(_segments[i].gameObject);
         }
 
-        // Clear the list then add the head (this)
-        // as the first segment
+        // Clear the list then add the head (this) as the first segment
         _segments.Clear();
         _segments.Add(this.transform);
 
-        // Grow the snake to the initial size
-        // -1 since the head was already added
+        // Grow the snake to the initial size -1 since the head was already
+        // added
         for (int i = 0; i < this.initialSize - 1; i++) {
             Grow();
         }

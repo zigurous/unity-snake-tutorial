@@ -33,12 +33,9 @@ public class Food : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player")
-        {
-            // Move the food to a new position
-            // when the snake eats it
-            RandomizePosition();
-        }
+        // Move the food to a new position
+        // when the snake eats it
+        RandomizePosition();
     }
 
 }

@@ -5,5 +5,5 @@
 - **Difficulty**: Beginner
 - **Topics**: Grids, Data Structures
 - **Version**: Unity 2019.4 LTS
-- [**Download**](https://github.com/zigurous/unity-snake-tutorial/archive/refs/tags/v1.0.0.zip)
+- [**Download**](https://github.com/zigurous/unity-snake-tutorial/archive/refs/heads/main.zip)
 - [**Watch Video**](https://youtu.be/U8gUnpeaMbQ)

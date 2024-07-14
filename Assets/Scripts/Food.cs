@@ -4,7 +4,6 @@
 public class Food : MonoBehaviour
 {
     public Collider2D gridArea;
-
     private Snake snake;
 
     private void Awake()
